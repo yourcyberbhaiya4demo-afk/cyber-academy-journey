@@ -39,6 +39,7 @@ export function EnrollmentModal({
         if (focusables.length === 0) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
+        if (!first || !last) return;
         if (!e.shiftKey && document.activeElement === last) {
           e.preventDefault();
           first.focus();
@@ -286,10 +287,10 @@ function Field({
   label: string;
   value: string;
   onChange: (v: string) => void;
-  error?: string;
+  error?: string | undefined;
   type?: string;
-  autoComplete?: string;
-  hint?: string;
+  autoComplete?: string | undefined;
+  hint?: string | undefined;
 }) {
   return (
     <div>

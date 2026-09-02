@@ -55,7 +55,11 @@ export function CourseCarousel({ courses }: { courses: Course[] }) {
     return () => clearInterval(t);
   }, [paused, maxIndex]);
 
-  useEffect(() => () => resumeTimer.current && clearTimeout(resumeTimer.current), []);
+  useEffect(() => {
+    return () => {
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    };
+  }, []);
 
   return (
     <div
@@ -82,11 +86,11 @@ export function CourseCarousel({ courses }: { courses: Course[] }) {
           }
         }}
         onTouchStart={(e) => {
-          touchStart.current = e.touches[0].clientX;
+          touchStart.current = e.touches[0]?.clientX ?? null;
         }}
         onTouchEnd={(e) => {
           if (touchStart.current === null) return;
-          const dx = e.changedTouches[0].clientX - touchStart.current;
+          const dx = (e.changedTouches[0]?.clientX ?? touchStart.current) - touchStart.current;
           if (Math.abs(dx) > 45) go(index + (dx < 0 ? 1 : -1));
           touchStart.current = null;
         }}
